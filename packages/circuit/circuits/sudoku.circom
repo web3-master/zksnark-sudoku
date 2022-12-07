@@ -1,10 +1,12 @@
 pragma circom 2.0.8;
 
 template sudoku() {
-    signal input puzzle[81];
-    signal input solution[81];
+    signal input puzzle[2];
+    signal input solution[2];
 
-    puzzle[0] === 0;
+    for (var i = 0; i < 2; i++) {
+        solution[i] === puzzle[i] + 1;
+    }
 }
 
-component main {public [puzzle]} = soduku();
+component main {public [puzzle]} = sudoku();

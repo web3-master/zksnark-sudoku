@@ -15,18 +15,17 @@ const assert = chai.assert;
 describe("Sudoku test", function () {
   it("Test case1", async () => {
     const circuit = await wasm_tester(
-      path.join(__dirname, "../circuits", "sudoku.circom")
+      path.join(__dirname, "../circuits", "sudoku.circom"),
+      {output: path.join(__dirname, "../build")}
     );
     await circuit.loadConstraints();
+    console.log('circuit', circuit);
 
-    assert.equal(circuit.nVars, 2);
-    assert.equal(circuit.constraints.length, 1);
+    const witness = await circuit.calculateWitness(
+      { puzzle: [10, 20], solution: [11, 21] },
+      true
+    );
 
-    // const witness = await circuit.calculateWitness(
-    //   { puzzle: Array(81).fill(0), solution: Array(81).fill(1) },
-    //   true
-    // );
-
-    // assert(Fr.eq(Fr.e(witness[0]), Fr.e(1)));
+    console.log('witness', witness);
   });
 });
