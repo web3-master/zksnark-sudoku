@@ -1,0 +1,30 @@
+{
+  "name": "zksnark-sudoku",
+  "version": "1.0.0",
+  "description": "Sudoku verifier using zkSNARK.",
+  "scripts": {
+    "compile-circuit": "npm run compile --workspace circuit",
+    "test-circuit": "npm run test --workspace circuit",
+    "start": "npm run start --workspace app",
+    "build": "npm run build --workspace dapp"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/web3-master/zksnark-sudoku.git"
+  },
+  "keywords": [
+    "zksnark",
+    "circom",
+    "snarkjs",
+    "sudoku"
+  ],
+  "author": "web3-master",
+  "license": "BSL-1.0",
+  "bugs": {
+    "url": "https://github.com/web3-master/zksnark-sudoku/issues"
+  },
+  "homepage": "https://github.com/web3-master/zksnark-sudoku#readme",
+  "workspaces": [
+    "./packages/*"
+  ]
+}

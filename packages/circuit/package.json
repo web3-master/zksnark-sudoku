@@ -1,0 +1,25 @@
+{
+  "name": "circuit",
+  "version": "1.0.0",
+  "description": "Circom circuit project for sudoku solution verify.",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/web3-master/zksnark-sudoku.git"
+  },
+  "keywords": [
+    "circom",
+    "circuit",
+    "zksnark",
+    "sudoku"
+  ],
+  "author": "web3-master",
+  "license": "BSL-1.0",
+  "bugs": {
+    "url": "https://github.com/web3-master/zksnark-sudoku/issues"
+  },
+  "homepage": "https://github.com/web3-master/zksnark-sudoku#readme"
+}
