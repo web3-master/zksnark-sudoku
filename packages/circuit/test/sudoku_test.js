@@ -16,16 +16,14 @@ describe("Sudoku test", function () {
   it("Test case1", async () => {
     const circuit = await wasm_tester(
       path.join(__dirname, "../circuits", "sudoku.circom"),
-      {output: path.join(__dirname, "../build")}
+      { output: path.join(__dirname, "../build") }
     );
-    await circuit.loadConstraints();
-    console.log('circuit', circuit);
 
     const witness = await circuit.calculateWitness(
-      { puzzle: [10, 20], solution: [11, 21] },
+      { puzzle: Array(81).fill(0), solution: Array(81).fill(1) },
       true
     );
 
-    console.log('witness', witness);
+    // console.log('witness', witness);
   });
 });
