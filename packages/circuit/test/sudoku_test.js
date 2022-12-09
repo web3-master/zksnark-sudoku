@@ -13,7 +13,7 @@ const Fr = new F1Field(exports.p);
 const assert = chai.assert;
 
 describe("Sudoku test", function () {
-  it("Test case1", async () => {
+  it("Valid puzzle, valid solution test", async () => {
     const circuit = await wasm_tester(
       path.join(__dirname, "../circuits", "sudoku.circom"),
       { output: path.join(__dirname, "../build") }
@@ -25,5 +25,21 @@ describe("Sudoku test", function () {
     );
 
     // console.log('witness', witness);
+    assert(Fr.eq(Fr.e(witness[1]), Fr.e(1)));
+  });
+
+  it("Valid puzzle, invalid solution test", async () => {
+    const circuit = await wasm_tester(
+      path.join(__dirname, "../circuits", "sudoku.circom"),
+      { output: path.join(__dirname, "../build") }
+    );
+
+    const witness = await circuit.calculateWitness(
+      { puzzle: Array(81).fill(0), solution: Array(81).fill(1) },
+      true
+    );
+
+    // console.log('witness', witness);
+    assert(Fr.eq(Fr.e(witness[1]), Fr.e(1)));
   });
 });

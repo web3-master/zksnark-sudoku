@@ -85,7 +85,7 @@ describe("GetNumberGroupForBox() test", function () {
 });
 
 describe("IsNumberInRange() test", function () {
-  it("In range test", async () => {
+  it("In range test: range = [0~9], number = 5", async () => {
     const circuit = await wasm_tester(
       path.join(__dirname, "circuits", "is_number_in_range.circom"),
       { output: path.join(__dirname, "../build") }
@@ -97,7 +97,7 @@ describe("IsNumberInRange() test", function () {
     assert(Fr.eq(Fr.e(witness[1]), Fr.e(1)));
   });
 
-  it("Out of range test", async () => {
+  it("Out of range test: range = [0~9], number = 15", async () => {
     const circuit = await wasm_tester(
       path.join(__dirname, "circuits", "is_number_in_range.circom"),
       { output: path.join(__dirname, "../build") }
@@ -111,39 +111,101 @@ describe("IsNumberInRange() test", function () {
 });
 
 describe("IsValidSolutionNumberGroup() test", function () {
-  it("Test case1", async () => {
+  it("Valid group test: numberGroup = [1, 3, 2, 9, 7, 5, 6, 4, 8]", async () => {
     const circuit = await wasm_tester(
       path.join(__dirname, "circuits", "is_valid_solution_number_group.circom"),
       { output: path.join(__dirname, "../build") }
     );
 
     const witness = await circuit.calculateWitness(
-      { numberGroup: Array(9).fill(0) },
+      { numberGroup: [1, 3, 2, 9, 7, 5, 6, 4, 8] },
       true
     );
 
-    console.log("witness", witness);
+    // console.log("witness", witness);
+    assert(Fr.eq(Fr.e(witness[1]), Fr.e(1)));
+  });
+
+  it("Invalid group test with duplicated numbers: numberGroup = [1, 1, 2, 9, 7, 5, 6, 4, 8]", async () => {
+    const circuit = await wasm_tester(
+      path.join(__dirname, "circuits", "is_valid_solution_number_group.circom"),
+      { output: path.join(__dirname, "../build") }
+    );
+
+    const witness = await circuit.calculateWitness(
+      { numberGroup: [1, 1, 2, 9, 7, 5, 6, 4, 8] },
+      true
+    );
+
+    // console.log("witness", witness);
+    assert(Fr.eq(Fr.e(witness[1]), Fr.e(0)));
+  });
+
+  it("Invalid group test with out-of-range number: numberGroup = [1, 11, 2, 9, 7, 5, 6, 4, 8]", async () => {
+    const circuit = await wasm_tester(
+      path.join(__dirname, "circuits", "is_valid_solution_number_group.circom"),
+      { output: path.join(__dirname, "../build") }
+    );
+
+    const witness = await circuit.calculateWitness(
+      { numberGroup: [1, 11, 2, 9, 7, 5, 6, 4, 8] },
+      true
+    );
+
+    // console.log("witness", witness);
+    assert(Fr.eq(Fr.e(witness[1]), Fr.e(0)));
   });
 });
 
 describe("IsValidPuzzleNumberGroup() test", function () {
-  it("Test case1", async () => {
+  it("Valid group test: numberGroup = [1, 0, 2, 0, 0, 5, 6, 0, 8]", async () => {
     const circuit = await wasm_tester(
       path.join(__dirname, "circuits", "is_valid_puzzle_number_group.circom"),
       { output: path.join(__dirname, "../build") }
     );
 
     const witness = await circuit.calculateWitness(
-      { numberGroup: Array(9).fill(0) },
+      { numberGroup: [1, 0, 2, 0, 0, 5, 6, 0, 8] },
       true
     );
 
-    console.log("witness", witness);
+    // console.log("witness", witness);
+    assert(Fr.eq(Fr.e(witness[1]), Fr.e(1)));
+  });
+
+  it("Invalid group test with duplicated numbers: numberGroup = [1, 0, 1, 0, 0, 5, 6, 0, 8]", async () => {
+    const circuit = await wasm_tester(
+      path.join(__dirname, "circuits", "is_valid_puzzle_number_group.circom"),
+      { output: path.join(__dirname, "../build") }
+    );
+
+    const witness = await circuit.calculateWitness(
+      { numberGroup: [1, 0, 1, 0, 0, 5, 6, 0, 8] },
+      true
+    );
+
+    // console.log("witness", witness);
+    assert(Fr.eq(Fr.e(witness[1]), Fr.e(0)));
+  });
+
+  it("Invalid group test with out-of-range number: numberGroup = [1, 0, 11, 0, 0, 5, 6, 0, 8]", async () => {
+    const circuit = await wasm_tester(
+      path.join(__dirname, "circuits", "is_valid_puzzle_number_group.circom"),
+      { output: path.join(__dirname, "../build") }
+    );
+
+    const witness = await circuit.calculateWitness(
+      { numberGroup: [1, 0, 11, 0, 0, 5, 6, 0, 8] },
+      true
+    );
+
+    // console.log("witness", witness);
+    assert(Fr.eq(Fr.e(witness[1]), Fr.e(0)));
   });
 });
 
 describe("IsValidPuzzle() test", function () {
-  it("Test case1", async () => {
+  it("Valid puzzle test: puzzle = [0,...,0]", async () => {
     const circuit = await wasm_tester(
       path.join(__dirname, "circuits", "is_valid_puzzle.circom"),
       { output: path.join(__dirname, "../build") }
@@ -154,12 +216,28 @@ describe("IsValidPuzzle() test", function () {
       true
     );
 
-    console.log("witness", witness);
+    // console.log("witness", witness);
+    assert(Fr.eq(Fr.e(witness[1]), Fr.e(1)));
+  });
+
+  it("Invalid puzzle test: puzzle = [1~9,1~9,...]", async () => {
+    const circuit = await wasm_tester(
+      path.join(__dirname, "circuits", "is_valid_puzzle.circom"),
+      { output: path.join(__dirname, "../build") }
+    );
+
+    const witness = await circuit.calculateWitness(
+      { puzzle: Array(81).fill().map((_, i) => (i % 9) + 1) },
+      true
+    );
+
+    // console.log("witness", witness);
+    assert(Fr.eq(Fr.e(witness[1]), Fr.e(0)));
   });
 });
 
 describe("IsValidSolution() test", function () {
-  it("Test case1", async () => {
+  it("Valid solution test: solution = [0,...,0]", async () => {
     const circuit = await wasm_tester(
       path.join(__dirname, "circuits", "is_valid_solution.circom"),
       { output: path.join(__dirname, "../build") }
@@ -170,22 +248,58 @@ describe("IsValidSolution() test", function () {
       true
     );
 
-    console.log("witness", witness);
+    // console.log("witness", witness);
+    assert(Fr.eq(Fr.e(witness[1]), Fr.e(1)));
+  });
+
+  it("Invalid solution test: solution = [1~9,1~9,...]", async () => {
+    const circuit = await wasm_tester(
+      path.join(__dirname, "circuits", "is_valid_solution.circom"),
+      { output: path.join(__dirname, "../build") }
+    );
+
+    const witness = await circuit.calculateWitness(
+      { solution: Array(81).fill().map((_, i) => (i % 9) + 1) },
+      true
+    );
+
+    // console.log("witness", witness);
+    assert(Fr.eq(Fr.e(witness[1]), Fr.e(0)));
   });
 });
 
 describe("IsValidSolutionOfPuzzle() test", function () {
-  it("Test case1", async () => {
+  it("Valid solution test: solution = [1,...,81], puzzle = [0,...,0]", async () => {
     const circuit = await wasm_tester(
       path.join(__dirname, "circuits", "is_valid_solution_of_puzzle.circom"),
       { output: path.join(__dirname, "../build") }
     );
 
     const witness = await circuit.calculateWitness(
-      { solution: Array(81).fill(0), puzzle: Array(81).fill(0) },
+      { solution: Array(81).fill().map((_,i) => i + 1), puzzle: Array(81).fill(0) },
       true
     );
 
-    console.log("witness", witness);
+    // console.log("witness", witness);
+    assert(Fr.eq(Fr.e(witness[1]), Fr.e(1)));
+  });
+
+  it("Invalid solution test: solution = [2,2...,81], puzzle = [1,0...,0]", async () => {
+    const circuit = await wasm_tester(
+      path.join(__dirname, "circuits", "is_valid_solution_of_puzzle.circom"),
+      { output: path.join(__dirname, "../build") }
+    );
+
+    var solution = Array(81).fill().map((_,i) => i + 1);
+    var puzzle = Array(81).fill(0);
+    solution[0] = 2; puzzle[0] = 1;
+
+    const witness = await circuit.calculateWitness(
+      { solution: solution, puzzle: puzzle },
+      true
+    );
+
+    // console.log("witness", witness);
+    assert(Fr.eq(Fr.e(witness[1]), Fr.e(0)));
   });
 });

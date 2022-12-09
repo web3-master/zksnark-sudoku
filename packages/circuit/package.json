@@ -4,7 +4,7 @@
   "description": "Circom circuit project for sudoku solution verify.",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --max-old-space-size=4000"
+    "test": "mocha --max-old-space-size=4000 --timeout 10000"
   },
   "repository": {
     "type": "git",
