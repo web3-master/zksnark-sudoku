@@ -27,6 +27,7 @@
     "chai": "^4.3.4",
     "circom_tester": "0.0.13",
     "circomlibjs": "^0.1.4",
-    "mocha": "^9.1.3"
+    "mocha": "^9.1.3",
+    "sudoku": "0.0.3"
   }
 }

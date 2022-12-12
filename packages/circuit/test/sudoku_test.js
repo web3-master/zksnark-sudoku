@@ -1,5 +1,6 @@
 const chai = require("chai");
 const path = require("path");
+const { generateTestData } = require("./test_data");
 
 const wasm_tester = require("circom_tester").wasm;
 
@@ -13,14 +14,19 @@ const Fr = new F1Field(exports.p);
 const assert = chai.assert;
 
 describe("Sudoku test", function () {
-  it("Valid puzzle, valid solution test", async () => {
+  let testData = generateTestData();
+  let validPuzzle = testData.validPuzzle;
+  let validSolution = testData.validSolution;
+  let invalidSolution = testData.invalidSolution;
+
+  it(`Valid puzzle, valid solution test: puzzle = ${validPuzzle}, solution = ${validSolution}`, async () => {
     const circuit = await wasm_tester(
       path.join(__dirname, "../circuits", "sudoku.circom"),
       { output: path.join(__dirname, "../build") }
     );
 
     const witness = await circuit.calculateWitness(
-      { puzzle: Array(81).fill(0), solution: Array(81).fill(1) },
+      { puzzle: validPuzzle, solution: validSolution },
       true
     );
 
@@ -28,18 +34,18 @@ describe("Sudoku test", function () {
     assert(Fr.eq(Fr.e(witness[1]), Fr.e(1)));
   });
 
-  it("Valid puzzle, invalid solution test", async () => {
+  it(`Valid puzzle, invalid solution test: puzzle = ${validPuzzle}, solution = ${invalidSolution}`, async () => {
     const circuit = await wasm_tester(
       path.join(__dirname, "../circuits", "sudoku.circom"),
       { output: path.join(__dirname, "../build") }
     );
 
     const witness = await circuit.calculateWitness(
-      { puzzle: Array(81).fill(0), solution: Array(81).fill(1) },
+      { puzzle: validPuzzle, solution: invalidSolution },
       true
     );
 
     // console.log('witness', witness);
-    assert(Fr.eq(Fr.e(witness[1]), Fr.e(1)));
+    assert(Fr.eq(Fr.e(witness[1]), Fr.e(0)));
   });
 });

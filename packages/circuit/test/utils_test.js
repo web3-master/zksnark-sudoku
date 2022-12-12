@@ -1,5 +1,6 @@
 const chai = require("chai");
 const path = require("path");
+const { generateTestData } = require("./test_data");
 
 const wasm_tester = require("circom_tester").wasm;
 
@@ -205,14 +206,17 @@ describe("IsValidPuzzleNumberGroup() test", function () {
 });
 
 describe("IsValidPuzzle() test", function () {
-  it("Valid puzzle test: puzzle = [0,...,0]", async () => {
+  let testData = generateTestData();
+  let validPuzzle = testData.validPuzzle;
+
+  it(`Valid puzzle test: puzzle = ${validPuzzle}`, async () => {
     const circuit = await wasm_tester(
       path.join(__dirname, "circuits", "is_valid_puzzle.circom"),
       { output: path.join(__dirname, "../build") }
     );
 
     const witness = await circuit.calculateWitness(
-      { puzzle: Array(81).fill(0) },
+      { puzzle: validPuzzle },
       true
     );
 
@@ -237,14 +241,17 @@ describe("IsValidPuzzle() test", function () {
 });
 
 describe("IsValidSolution() test", function () {
-  it("Valid solution test: solution = [0,...,0]", async () => {
+  let testData = generateTestData();
+  let validSolution = testData.validSolution;
+
+  it(`Valid solution test: solution = ${validSolution}`, async () => {
     const circuit = await wasm_tester(
       path.join(__dirname, "circuits", "is_valid_solution.circom"),
       { output: path.join(__dirname, "../build") }
     );
 
     const witness = await circuit.calculateWitness(
-      { solution: Array(81).fill(0) },
+      { solution: validSolution },
       true
     );
 
@@ -269,14 +276,19 @@ describe("IsValidSolution() test", function () {
 });
 
 describe("IsValidSolutionOfPuzzle() test", function () {
-  it("Valid solution test: solution = [1,...,81], puzzle = [0,...,0]", async () => {
+  let testData = generateTestData();
+  let validPuzzle = testData.validPuzzle;
+  let validSolution = testData.validSolution;
+  let invalidSolution = testData.invalidSolution;
+  
+  it(`Valid solution test: solution = ${validSolution}, puzzle = ${validPuzzle}`, async () => {
     const circuit = await wasm_tester(
       path.join(__dirname, "circuits", "is_valid_solution_of_puzzle.circom"),
       { output: path.join(__dirname, "../build") }
     );
 
     const witness = await circuit.calculateWitness(
-      { solution: Array(81).fill().map((_,i) => i + 1), puzzle: Array(81).fill(0) },
+      { solution: validSolution, puzzle: validPuzzle },
       true
     );
 
@@ -284,18 +296,14 @@ describe("IsValidSolutionOfPuzzle() test", function () {
     assert(Fr.eq(Fr.e(witness[1]), Fr.e(1)));
   });
 
-  it("Invalid solution test: solution = [2,2...,81], puzzle = [1,0...,0]", async () => {
+  it(`Invalid solution test: solution = ${invalidSolution}, puzzle = ${validPuzzle}`, async () => {
     const circuit = await wasm_tester(
       path.join(__dirname, "circuits", "is_valid_solution_of_puzzle.circom"),
       { output: path.join(__dirname, "../build") }
     );
 
-    var solution = Array(81).fill().map((_,i) => i + 1);
-    var puzzle = Array(81).fill(0);
-    solution[0] = 2; puzzle[0] = 1;
-
     const witness = await circuit.calculateWitness(
-      { solution: solution, puzzle: puzzle },
+      { solution: invalidSolution, puzzle: validPuzzle },
       true
     );
 

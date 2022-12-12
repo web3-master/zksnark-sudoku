@@ -12,10 +12,12 @@ template sudoku() {
     component solutionValidator = IsValidSolution();
     component solutionPuzzleMatcher = IsValidSolutionOfPuzzle();
 
-    puzzleValidator.puzzle <== puzzle;
-    solutionValidator.solution <== solution;
-    solutionPuzzleMatcher.solution <== solution;
-    solutionPuzzleMatcher.puzzle <== puzzle;
+    for (var i = 0; i < 81; i++) {
+        puzzleValidator.puzzle[i] <== puzzle[i];
+        solutionValidator.solution[i] <== solution[i];
+        solutionPuzzleMatcher.solution[i] <== solution[i];
+        solutionPuzzleMatcher.puzzle[i] <== puzzle[i];
+    }
 
     component multiAnd = MultiAND(3);
     multiAnd.in[0] <== puzzleValidator.result;
