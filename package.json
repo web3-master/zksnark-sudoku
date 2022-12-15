@@ -5,8 +5,8 @@
   "scripts": {
     "compile-circuit": "npm run compile --workspace circuit",
     "test-circuit": "npm run test --workspace circuit",
-    "start": "npm run start --workspace app",
-    "build": "npm run build --workspace dapp"
+    "dev": "npm run dev --workspace app",
+    "build": "npm run build --workspace app"
   },
   "repository": {
     "type": "git",
