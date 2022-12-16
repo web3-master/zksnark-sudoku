@@ -1,5 +1,11 @@
-import { Button } from "antd";
+import { Input } from "antd";
 
-export default function ProofView() {
-  return <Button>This is proof view.</Button>;
+interface Props {
+  disabled: boolean;
 }
+
+const ProofView: React.FC<Props> = ({ disabled }) => {
+  return <Input.TextArea rows={5} disabled={disabled} />;
+};
+
+export default ProofView;

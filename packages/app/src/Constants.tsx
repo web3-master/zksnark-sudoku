@@ -6,3 +6,5 @@ export const GMAIL = "mailto:dany.armstrong90@gmail.com";
 export const LINKEDIN = "https://www.linkedin.com/in/web3-master/";
 export const GITHUB = "https://github.com/web3-master";
 export const GITHUB_PROJECT = "https://github.com/web3-master/zksnark-sudoku";
+
+export const CELL_SIZE = 50;

@@ -1,4 +1,6 @@
-import { Button, Col, Row, Typography } from "antd";
+import { Button, Card, Col, Row, Typography } from "antd";
+import ProofView from "./ProofView";
+import PuzzleView from "./PuzzleView";
 
 export default function VerifyPannel() {
   return (
@@ -8,26 +10,22 @@ export default function VerifyPannel() {
           <Typography.Title level={3}>Verify</Typography.Title>
         </Col>
       </Row>
-      <Row>
-        <Col flex={1}>Puzzle:</Col>
-        <Col flex={1}>Board...</Col>
-        <Col flex={1}>
-          <Button type="primary">Load Puzzle</Button>
-        </Col>
-      </Row>
-      <Row>
-        <Col flex={1}>Proof:</Col>
-        <Col flex={1}>Proof content...</Col>
-        <Col flex={1}>
-          <Button type="primary">Load Proof</Button>
-          <br />
-          <Button type="primary">Verify</Button>
-        </Col>
-      </Row>
-      <Row>
-        <Col flex={1}>Result:</Col>
-        <Col flex={1}>Solved!</Col>
-      </Row>
+      <Card title="Puzzle">
+        <PuzzleView />
+        <Row gutter={20} justify="center" style={{ marginTop: 10 }}>
+          <Col>
+            <Button type="primary">Load Puzzle</Button>
+          </Col>
+        </Row>
+      </Card>
+      <Card title="Proof" style={{ marginTop: 10 }}>
+        <ProofView disabled={false} />
+        <Row gutter={20} justify="center" style={{ marginTop: 10 }}>
+          <Col>
+            <Button type="primary">Verify</Button>
+          </Col>
+        </Row>
+      </Card>
     </>
   );
 }

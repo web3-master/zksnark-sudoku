@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@ant-design/colors": "^6.0.0",
     "@next/font": "13.0.6",
     "@types/node": "18.11.15",
     "@types/react": "18.0.26",
