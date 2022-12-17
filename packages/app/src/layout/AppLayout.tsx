@@ -1,3 +1,4 @@
+import { purple } from "@ant-design/colors";
 import {
   GithubOutlined,
   GoogleOutlined,
@@ -6,13 +7,7 @@ import {
 import { Col, Layout, Row } from "antd";
 import { Content, Footer, Header } from "antd/lib/layout/layout";
 import { ReactNode } from "react";
-import {
-  APP_NAME,
-  GITHUB,
-  GITHUB_PROJECT,
-  GMAIL,
-  LINKEDIN,
-} from "../Constants";
+import { APP_NAME, GITHUB, GMAIL, LINKEDIN } from "../Constants";
 import logo from "../images/sudoku.png";
 
 export default function AppLayout({ children }: { children: ReactNode }) {
@@ -25,7 +20,7 @@ export default function AppLayout({ children }: { children: ReactNode }) {
               position: "fixed",
               zIndex: 1,
               width: "100%",
-              background: "gray",
+              background: purple.primary,
             }}
           >
             <Row align="stretch" gutter={20}>
@@ -33,7 +28,7 @@ export default function AppLayout({ children }: { children: ReactNode }) {
                 <img src={logo.src} width={40} height={40} alt="logo" />
               </Col>
               <Col>
-                <h1>{APP_NAME}</h1>
+                <h1 style={{ color: "white" }}>{APP_NAME}</h1>
               </Col>
             </Row>
           </Header>

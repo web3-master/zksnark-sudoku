@@ -10,6 +10,8 @@ const PlayPannel: React.FC = () => {
   const [solution, setSolution] = useState<number[]>(Array(81).fill(0));
   const [selectedCellIndex, setSelectedCellIndex] = useState<number>(-1);
 
+  const [proof, setProof] = useState<string>("");
+
   const onKeyButtonClick = (value: number) => {
     if (selectedCellIndex == -1) return;
     if (puzzle[selectedCellIndex] > 0) return;
@@ -50,11 +52,25 @@ const PlayPannel: React.FC = () => {
     link.click();
   };
 
+  const onGenerateProof = () => {
+    setProof("dummy proof data");
+  };
+
+  const onSaveProof = () => {
+    const proofData = JSON.stringify(proof);
+    const blob = new Blob([proofData], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.download = "proof.json";
+    link.href = url;
+    link.click();
+  };
+
   return (
     <>
       <Row justify="center">
         <Col>
-          <Typography.Title level={3}>Play</Typography.Title>
+          <Typography.Title level={3}>PLAY</Typography.Title>
         </Col>
       </Row>
       <Card title="Puzzle">
@@ -95,13 +111,17 @@ const PlayPannel: React.FC = () => {
         </Row>
       </Card>
       <Card title="Proof" style={{ marginTop: 10 }}>
-        <ProofView disabled={false} />
+        <ProofView proof={proof} disabled={false} />
         <Row gutter={20} justify="center" style={{ marginTop: 10 }}>
           <Col>
-            <Button type="primary">Generate Proof</Button>
+            <Button type="primary" onClick={onGenerateProof}>
+              Generate Proof
+            </Button>
           </Col>
           <Col>
-            <Button type="primary">Save Proof</Button>
+            <Button type="primary" onClick={onSaveProof}>
+              Save Proof
+            </Button>
           </Col>
         </Row>
       </Card>

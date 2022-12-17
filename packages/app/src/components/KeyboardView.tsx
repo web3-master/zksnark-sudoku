@@ -11,7 +11,7 @@ const KeyboardView: React.FC<Props> = ({ onButtonClick }) => {
       {Array(9)
         .fill(0)
         .map((_, index) => (
-          <Col span={12}>
+          <Col key={index} span={12}>
             <Button
               style={{
                 width: CELL_SIZE,

@@ -1,21 +1,19 @@
-import { Button, Col, InputNumber, Row, theme } from "antd";
-import { useState } from "react";
+import { Button, Col, Row } from "antd";
 import { CELL_SIZE } from "../Constants";
 
 interface PuzzleViewProps {
   puzzle: number[];
   solution?: number[];
   selectedCellIndex?: number;
-  onCellClick: (index: number) => void;
+  onCellClick?: (index: number) => void;
 }
 
 const PuzzleView: React.FC<PuzzleViewProps> = ({
   puzzle,
   solution = Array(81).fill(0),
   selectedCellIndex = -1,
-  onCellClick,
+  onCellClick = undefined,
 }) => {
-  console.log(puzzle);
   return (
     <div
       style={{
@@ -25,13 +23,13 @@ const PuzzleView: React.FC<PuzzleViewProps> = ({
       {Array(9)
         .fill(0)
         .map((_, row) => (
-          <Row justify="center">
+          <Row key={row} justify="center">
             {Array(9)
               .fill(0)
               .map((_, col) => {
                 const index = row * 9 + col;
                 return (
-                  <Col>
+                  <Col key={index}>
                     <Cell
                       value={
                         puzzle[index] == 0 ? solution[index] : puzzle[index]
@@ -55,14 +53,14 @@ interface CellProps {
   index: number;
   selected: boolean;
   disabled?: boolean;
-  onClick: (index: number) => void;
+  onClick?: (index: number) => void;
 }
 const Cell: React.FC<CellProps> = ({
   value,
   index,
   selected,
   disabled = false,
-  onClick,
+  onClick = undefined,
 }) => {
   const row = Math.floor(index / 9);
   const col = index % 9;
@@ -76,7 +74,9 @@ const Cell: React.FC<CellProps> = ({
       }}
       type={selected ? "primary" : "default"}
       disabled={disabled}
-      onClick={() => onClick(index)}
+      onClick={() => {
+        if (onClick != undefined) onClick(index);
+      }}
     >
       {value > 0 ? value : ""}
     </Button>
