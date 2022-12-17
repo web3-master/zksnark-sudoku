@@ -7,4 +7,4 @@ export const LINKEDIN = "https://www.linkedin.com/in/web3-master/";
 export const GITHUB = "https://github.com/web3-master";
 export const GITHUB_PROJECT = "https://github.com/web3-master/zksnark-sudoku";
 
-export const CELL_SIZE = 50;
+export const CELL_SIZE = 40;

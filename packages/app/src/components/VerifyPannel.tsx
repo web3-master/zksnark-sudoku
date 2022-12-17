@@ -11,7 +11,7 @@ export default function VerifyPannel() {
         </Col>
       </Row>
       <Card title="Puzzle">
-        <PuzzleView />
+        {/* <PuzzleView /> */}
         <Row gutter={20} justify="center" style={{ marginTop: 10 }}>
           <Col>
             <Button type="primary">Load Puzzle</Button>
