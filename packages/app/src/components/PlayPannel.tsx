@@ -1,4 +1,4 @@
-import { Button, Card, Col, Row, Typography } from "antd";
+import { Button, Card, Col, Row, Spin, Typography, message } from "antd";
 import React, { useState } from "react";
 import { generatePuzzle, getSolutionOfPuzzle } from "../utils/GameUtils";
 import KeyboardView from "./KeyboardView";
@@ -11,6 +11,9 @@ const PlayPannel: React.FC = () => {
   const [selectedCellIndex, setSelectedCellIndex] = useState<number>(-1);
 
   const [proof, setProof] = useState<string>("");
+  const [proofCalculating, setProofCalculating] = useState<boolean>(false);
+
+  const [messageApi, contextHolder] = message.useMessage();
 
   const onKeyButtonClick = (value: number) => {
     if (selectedCellIndex == -1) return;
@@ -52,8 +55,25 @@ const PlayPannel: React.FC = () => {
     link.click();
   };
 
-  const onGenerateProof = () => {
-    setProof("dummy proof data");
+  const onGenerateProof = async () => {
+    const input = {
+      puzzle: puzzle,
+      solution: solution
+    };
+
+    setProofCalculating(true);
+
+    const { proof, publicSignals } = await snarkjs.groth16.fullProve(input, "sudoku.wasm", "sudoku_1.zkey");
+
+    setProofCalculating(false);
+    
+    const circuitOutputSignal = publicSignals[0];
+    if (circuitOutputSignal === '1') {
+      setProof(JSON.stringify(proof, null, 1));
+      messageApi.success("Your proof is generated. You can make sure others that you have solved this puzzle without sharing solution.", 5);
+    } else {
+      messageApi.error("Your solution isn't correct. Please solve the puzzle correctly!", 5);
+    }
   };
 
   const onSaveProof = () => {
@@ -68,11 +88,13 @@ const PlayPannel: React.FC = () => {
 
   return (
     <>
+      {contextHolder}
       <Row justify="center">
         <Col>
           <Typography.Title level={3}>PLAY</Typography.Title>
         </Col>
       </Row>
+      <Spin spinning={proofCalculating} tip="Proof generating..." size="large">
       <Card title="Puzzle">
         <Row>
           <Col span={20}>
@@ -111,7 +133,7 @@ const PlayPannel: React.FC = () => {
         </Row>
       </Card>
       <Card title="Proof" style={{ marginTop: 10 }}>
-        <ProofView proof={proof} disabled={false} />
+        <ProofView proof={proof} disabled={true} />
         <Row gutter={20} justify="center" style={{ marginTop: 10 }}>
           <Col>
             <Button type="primary" onClick={onGenerateProof}>
@@ -125,6 +147,7 @@ const PlayPannel: React.FC = () => {
           </Col>
         </Row>
       </Card>
+      </Spin>
     </>
   );
 };

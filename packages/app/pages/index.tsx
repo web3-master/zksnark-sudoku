@@ -16,6 +16,7 @@ export default function Home() {
         <meta name="description" content={APP_DESCRIPTION} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
+        <script type="text/javascript" src="/snarkjs.js"></script>
       </Head>
       <AppLayout>
         <Row style={{ padding: 50 }} gutter={50}>
