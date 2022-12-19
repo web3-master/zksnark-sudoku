@@ -1,4 +1,4 @@
-![🏆](https://github.com/web3-master/zksnark-sudoku/blob/master/screenshot.jpg?raw=true)
+![🏆](https://github.com/web3-master/zksnark-sudoku/blob/master/screen-capture.gif?raw=true)
 
 # 🏆🏆🏆 zkSNARK Sudoku 🏆🏆🏆
 
