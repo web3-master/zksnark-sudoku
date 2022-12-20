@@ -7,7 +7,13 @@ import {
 import { Col, Layout, Row } from "antd";
 import { Content, Footer, Header } from "antd/lib/layout/layout";
 import { ReactNode } from "react";
-import { APP_NAME, GITHUB, GMAIL, LINKEDIN } from "../Constants";
+import {
+  APP_NAME,
+  GITHUB,
+  GITHUB_PROJECT,
+  GMAIL,
+  LINKEDIN,
+} from "../Constants";
 import logo from "../images/sudoku.png";
 
 export default function AppLayout({ children }: { children: ReactNode }) {
@@ -23,12 +29,23 @@ export default function AppLayout({ children }: { children: ReactNode }) {
               background: purple.primary,
             }}
           >
-            <Row align="stretch" gutter={20}>
+            <Row align="center" gutter={20}>
               <Col>
                 <img src={logo.src} width={40} height={40} alt="logo" />
               </Col>
               <Col>
                 <h1 style={{ color: "white" }}>{APP_NAME}</h1>
+              </Col>
+              <Col>
+                <div>
+                  <a
+                    href={GITHUB_PROJECT}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <GithubOutlined style={{ fontSize: 20 }} />
+                  </a>
+                </div>
               </Col>
             </Row>
           </Header>

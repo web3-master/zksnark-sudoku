@@ -47,7 +47,7 @@ const PlayPannel: React.FC = () => {
 
   const onSavePuzzle = () => {
     const puzzleData = JSON.stringify(puzzle);
-    const blob = new Blob([puzzleData], { type: "text/plain" });
+    const blob = new Blob([puzzleData], { type: "application/json" });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.download = "puzzle.json";
@@ -58,27 +58,41 @@ const PlayPannel: React.FC = () => {
   const onGenerateProof = async () => {
     const input = {
       puzzle: puzzle,
-      solution: solution
+      solution: solution,
     };
 
     setProofCalculating(true);
 
-    const { proof, publicSignals } = await snarkjs.groth16.fullProve(input, "sudoku.wasm", "sudoku_1.zkey");
+    const { proof, publicSignals } = await snarkjs.groth16.fullProve(
+      input,
+      "sudoku.wasm",
+      "sudoku_1.zkey"
+    );
 
     setProofCalculating(false);
-    
+
     const circuitOutputSignal = publicSignals[0];
-    if (circuitOutputSignal === '1') {
-      setProof(JSON.stringify(proof, null, 1));
-      messageApi.success("Your proof is generated. You can make sure others that you have solved this puzzle without sharing solution.", 5);
+    if (circuitOutputSignal === "1") {
+      setProof(JSON.stringify(proof));
+      messageApi.success(
+        "Your proof is generated. You can make sure others that you have solved this puzzle without sharing solution.",
+        5
+      );
     } else {
-      messageApi.error("Your solution isn't correct. Please solve the puzzle correctly!", 5);
+      messageApi.error(
+        "Your solution isn't correct. Please solve the puzzle correctly!",
+        5
+      );
     }
   };
 
   const onSaveProof = () => {
-    const proofData = JSON.stringify(proof);
-    const blob = new Blob([proofData], { type: "text/plain" });
+    if (proof === "") {
+      messageApi.error("Please generate proof for your solution!");
+      return;
+    }
+
+    const blob = new Blob([proof], { type: "application/json" });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.download = "proof.json";
@@ -95,58 +109,58 @@ const PlayPannel: React.FC = () => {
         </Col>
       </Row>
       <Spin spinning={proofCalculating} tip="Proof generating..." size="large">
-      <Card title="Puzzle">
-        <Row>
-          <Col span={20}>
-            <PuzzleView
-              puzzle={puzzle}
-              solution={solution}
-              selectedCellIndex={selectedCellIndex}
-              onCellClick={onCellClick}
-            />
-          </Col>
-          <Col span={4}>
-            <KeyboardView onButtonClick={onKeyButtonClick} />
-          </Col>
-        </Row>
-        <Row gutter={20} justify="center" style={{ marginTop: 10 }}>
-          <Col>
-            <Button type="primary" onClick={onNewPuzzle}>
-              New Puzzle
-            </Button>
-          </Col>
-          <Col>
-            <Button type="primary" onClick={onSolvePuzzle}>
-              Solve Puzzle
-            </Button>
-          </Col>
-          <Col>
-            <Button type="primary" onClick={onEraseSolution}>
-              Erase Solution
-            </Button>
-          </Col>
-          <Col>
-            <Button type="primary" onClick={onSavePuzzle}>
-              Save Puzzle
-            </Button>
-          </Col>
-        </Row>
-      </Card>
-      <Card title="Proof" style={{ marginTop: 10 }}>
-        <ProofView proof={proof} disabled={true} />
-        <Row gutter={20} justify="center" style={{ marginTop: 10 }}>
-          <Col>
-            <Button type="primary" onClick={onGenerateProof}>
-              Generate Proof
-            </Button>
-          </Col>
-          <Col>
-            <Button type="primary" onClick={onSaveProof}>
-              Save Proof
-            </Button>
-          </Col>
-        </Row>
-      </Card>
+        <Card title="Puzzle">
+          <Row>
+            <Col span={20}>
+              <PuzzleView
+                puzzle={puzzle}
+                solution={solution}
+                selectedCellIndex={selectedCellIndex}
+                onCellClick={onCellClick}
+              />
+            </Col>
+            <Col span={4}>
+              <KeyboardView onButtonClick={onKeyButtonClick} />
+            </Col>
+          </Row>
+          <Row gutter={20} justify="center" style={{ marginTop: 10 }}>
+            <Col>
+              <Button type="primary" onClick={onNewPuzzle}>
+                New Puzzle
+              </Button>
+            </Col>
+            <Col>
+              <Button type="primary" onClick={onSolvePuzzle}>
+                Solve Puzzle
+              </Button>
+            </Col>
+            <Col>
+              <Button type="primary" onClick={onEraseSolution}>
+                Erase Solution
+              </Button>
+            </Col>
+            <Col>
+              <Button type="primary" onClick={onSavePuzzle}>
+                Save Puzzle
+              </Button>
+            </Col>
+          </Row>
+        </Card>
+        <Card title="Proof" style={{ marginTop: 10 }}>
+          <ProofView proof={proof} disabled={true} />
+          <Row gutter={20} justify="center" style={{ marginTop: 10 }}>
+            <Col>
+              <Button type="primary" onClick={onGenerateProof}>
+                Generate Proof
+              </Button>
+            </Col>
+            <Col>
+              <Button type="primary" onClick={onSaveProof}>
+                Save Proof
+              </Button>
+            </Col>
+          </Row>
+        </Card>
       </Spin>
     </>
   );
