@@ -1,11 +1,11 @@
-import { Button, Card, Col, message, Row, Spin, Typography } from "antd";
-import { ChangeEvent, useRef, useState } from "react";
-import ProofView from "./ProofView";
-import PuzzleView from "./PuzzleView";
+import { Button, Card, Col, message, Row, Spin, Typography } from 'antd';
+import { ChangeEvent, useRef, useState } from 'react';
+import ProofView from './ProofView';
+import PuzzleView from './PuzzleView';
 
 export default function VerifyPannel() {
   const [puzzle, setPuzzle] = useState<number[]>(Array(81).fill(0));
-  const [proof, setProof] = useState<string>("");
+  const [proof, setProof] = useState<string>('');
   const [verified, setVerified] = useState<boolean>(false);
 
   const puzzleFile = useRef(null);
@@ -20,13 +20,13 @@ export default function VerifyPannel() {
 
   const isValidProofData = (proofData: any): boolean => {
     return (
-      "pi_a" in proofData &&
-      "pi_b" in proofData &&
-      "pi_c" in proofData &&
-      "protocol" in proofData &&
-      "curve" in proofData &&
-      proofData.protocol === "groth16" &&
-      proofData.curve === "bn128"
+      'pi_a' in proofData &&
+      'pi_b' in proofData &&
+      'pi_c' in proofData &&
+      'protocol' in proofData &&
+      'curve' in proofData &&
+      proofData.protocol === 'groth16' &&
+      proofData.curve === 'bn128'
     );
   };
 
@@ -49,21 +49,21 @@ export default function VerifyPannel() {
               if (isValidPuzzleData(fileContent)) {
                 setPuzzle(fileContent);
               } else {
-                messageApi.error("Selected file is not valid puzzle file!");
+                messageApi.error('Selected file is not valid puzzle file!');
               }
             } else if (event.target == proofFile.current) {
               if (isValidProofData(fileContent)) {
                 setProof(JSON.stringify(fileContent));
               } else {
-                messageApi.error("Selected file is not valid proof file!");
+                messageApi.error('Selected file is not valid proof file!');
               }
             }
           } catch (error) {
-            messageApi.error("You selected wrong file!");
+            messageApi.error('You selected wrong file!');
           }
         }
       };
-      fileReader.readAsText(file, "UTF-8");
+      fileReader.readAsText(file, 'UTF-8');
     }
   };
 
@@ -73,12 +73,12 @@ export default function VerifyPannel() {
   };
 
   const onVerifyProof = async () => {
-    if (proof === "") {
-      messageApi.error("Please select your proof file!");
+    if (proof === '') {
+      messageApi.error('Please select your proof file!');
       return;
     }
 
-    const vkey = await fetch("sudoku_verify_key.json").then((res) => {
+    const vkey = await fetch('sudoku_verify_key.json').then((res) => {
       return res.json();
     });
 
@@ -87,14 +87,14 @@ export default function VerifyPannel() {
     //
     // This first "1" is the circuit's output signal, which means the solution is correct.
     //
-    const publicSignals = ["1", ...puzzle];
+    const publicSignals = ['1', ...puzzle];
     const proofData = JSON.parse(proof);
     const res = await snarkjs.groth16.verify(vkey, publicSignals, proofData);
 
     setVerifying(false);
 
     if (res) {
-      messageApi.success("Your proof is verified. You solved the puzzle.", 5);
+      messageApi.success('Your proof is verified. You solved the puzzle.', 5);
     } else {
       messageApi.error("Your proof isn't correct.", 5);
     }
@@ -108,14 +108,14 @@ export default function VerifyPannel() {
         type="file"
         id="puzzleFile"
         ref={puzzleFile}
-        style={{ display: "none" }}
+        style={{ display: 'none' }}
         onChange={onFileSelected}
       />
       <input
         type="file"
         id="proofFile"
         ref={proofFile}
-        style={{ display: "none" }}
+        style={{ display: 'none' }}
         onChange={onFileSelected}
       />
       <Row justify="center">
@@ -135,7 +135,7 @@ export default function VerifyPannel() {
           </Row>
         </Card>
         <Card
-          title={verified ? "Proof - YOU SOLVED THE PUZZLE!" : "Proof"}
+          title={verified ? 'Proof - YOU SOLVED THE PUZZLE!' : 'Proof'}
           style={{ marginTop: 10 }}
         >
           <ProofView proof={proof} disabled={true} />

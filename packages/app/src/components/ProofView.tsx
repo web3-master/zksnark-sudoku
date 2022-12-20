@@ -1,4 +1,4 @@
-import { Input } from "antd";
+import { Input } from 'antd';
 
 interface Props {
   proof: string;

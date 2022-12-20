@@ -1,16 +1,16 @@
-import { Button, Card, Col, Row, Spin, Typography, message } from "antd";
-import React, { useState } from "react";
-import { generatePuzzle, getSolutionOfPuzzle } from "../utils/GameUtils";
-import KeyboardView from "./KeyboardView";
-import ProofView from "./ProofView";
-import PuzzleView from "./PuzzleView";
+import { Button, Card, Col, Row, Spin, Typography, message } from 'antd';
+import React, { useState } from 'react';
+import { generatePuzzle, getSolutionOfPuzzle } from '../utils/GameUtils';
+import KeyboardView from './KeyboardView';
+import ProofView from './ProofView';
+import PuzzleView from './PuzzleView';
 
 const PlayPannel: React.FC = () => {
   const [puzzle, setPuzzle] = useState<number[]>(Array(81).fill(0));
   const [solution, setSolution] = useState<number[]>(Array(81).fill(0));
   const [selectedCellIndex, setSelectedCellIndex] = useState<number>(-1);
 
-  const [proof, setProof] = useState<string>("");
+  const [proof, setProof] = useState<string>('');
   const [proofCalculating, setProofCalculating] = useState<boolean>(false);
 
   const [messageApi, contextHolder] = message.useMessage();
@@ -47,10 +47,10 @@ const PlayPannel: React.FC = () => {
 
   const onSavePuzzle = () => {
     const puzzleData = JSON.stringify(puzzle);
-    const blob = new Blob([puzzleData], { type: "application/json" });
+    const blob = new Blob([puzzleData], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.download = "puzzle.json";
+    const link = document.createElement('a');
+    link.download = 'puzzle.json';
     link.href = url;
     link.click();
   };
@@ -65,17 +65,17 @@ const PlayPannel: React.FC = () => {
 
     const { proof, publicSignals } = await snarkjs.groth16.fullProve(
       input,
-      "sudoku.wasm",
-      "sudoku_1.zkey"
+      'sudoku.wasm',
+      'sudoku_1.zkey'
     );
 
     setProofCalculating(false);
 
     const circuitOutputSignal = publicSignals[0];
-    if (circuitOutputSignal === "1") {
+    if (circuitOutputSignal === '1') {
       setProof(JSON.stringify(proof));
       messageApi.success(
-        "Your proof is generated. You can make sure others that you have solved this puzzle without sharing solution.",
+        'Your proof is generated. You can make sure others that you have solved this puzzle without sharing solution.',
         5
       );
     } else {
@@ -87,15 +87,15 @@ const PlayPannel: React.FC = () => {
   };
 
   const onSaveProof = () => {
-    if (proof === "") {
-      messageApi.error("Please generate proof for your solution!");
+    if (proof === '') {
+      messageApi.error('Please generate proof for your solution!');
       return;
     }
 
-    const blob = new Blob([proof], { type: "application/json" });
+    const blob = new Blob([proof], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.download = "proof.json";
+    const link = document.createElement('a');
+    link.download = 'proof.json';
     link.href = url;
     link.click();
   };

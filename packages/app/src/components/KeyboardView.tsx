@@ -1,5 +1,5 @@
-import { Button, Col, Row } from "antd";
-import { CELL_SIZE } from "../Constants";
+import { Button, Col, Row } from 'antd';
+import { CELL_SIZE } from '../Constants';
 
 interface Props {
   onButtonClick: (value: number) => void;

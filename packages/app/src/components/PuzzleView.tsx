@@ -1,5 +1,5 @@
-import { Button, Col, Row } from "antd";
-import { CELL_SIZE } from "../Constants";
+import { Button, Col, Row } from 'antd';
+import { CELL_SIZE } from '../Constants';
 
 interface PuzzleViewProps {
   puzzle: number[];
@@ -72,13 +72,13 @@ const Cell: React.FC<CellProps> = ({
         marginLeft: col == 3 || col == 6 ? 4 : 0,
         marginTop: row == 3 || row == 6 ? 4 : 0,
       }}
-      type={selected ? "primary" : "default"}
+      type={selected ? 'primary' : 'default'}
       disabled={disabled}
       onClick={() => {
         if (onClick != undefined) onClick(index);
       }}
     >
-      {value > 0 ? value : ""}
+      {value > 0 ? value : ''}
     </Button>
   );
 };

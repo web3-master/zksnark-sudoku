@@ -1,40 +1,41 @@
-import { purple } from "@ant-design/colors";
+import { purple } from '@ant-design/colors';
 import {
   GithubOutlined,
   GoogleOutlined,
   LinkedinOutlined,
-} from "@ant-design/icons";
-import { Col, Layout, Row } from "antd";
-import { Content, Footer, Header } from "antd/lib/layout/layout";
-import { ReactNode } from "react";
+} from '@ant-design/icons';
+import { Col, Layout, Row } from 'antd';
+import { Content, Footer, Header } from 'antd/lib/layout/layout';
+import Image from 'next/image';
+import { ReactNode } from 'react';
 import {
   APP_NAME,
   GITHUB,
   GITHUB_PROJECT,
   GMAIL,
   LINKEDIN,
-} from "../Constants";
-import logo from "../images/sudoku.png";
+} from '../Constants';
+import logo from '../images/sudoku.png';
 
 export default function AppLayout({ children }: { children: ReactNode }) {
   return (
     <Row>
       <Col span={24}>
-        <Layout style={{ minHeight: "100vh" }}>
+        <Layout style={{ minHeight: '100vh' }}>
           <Header
             style={{
-              position: "fixed",
+              position: 'fixed',
               zIndex: 1,
-              width: "100%",
+              width: '100%',
               background: purple.primary,
             }}
           >
             <Row align="center" gutter={20}>
               <Col>
-                <img src={logo.src} width={40} height={40} alt="logo" />
+                <Image src={logo.src} width={40} height={40} alt="logo" />
               </Col>
               <Col>
-                <h1 style={{ color: "white" }}>{APP_NAME}</h1>
+                <h1 style={{ color: 'white' }}>{APP_NAME}</h1>
               </Col>
               <Col>
                 <div>
@@ -52,9 +53,9 @@ export default function AppLayout({ children }: { children: ReactNode }) {
           <Content style={{ marginTop: 60 }}>{children}</Content>
           <Footer
             style={{
-              position: "sticky",
+              position: 'sticky',
               bottom: 0,
-              textAlign: "center",
+              textAlign: 'center',
             }}
           >
             © 2022 All rights reserved by Web3-Master.

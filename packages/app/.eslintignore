@@ -1,0 +1,8 @@
+# Ignore artifacts:
+.next
+node_modules
+out
+pages
+public
+styles
+next.config.js
