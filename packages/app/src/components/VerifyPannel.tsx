@@ -14,20 +14,18 @@ export default function VerifyPannel() {
 
   const [messageApi, contextHolder] = message.useMessage();
 
-  const isValidPuzzleData = (puzzleData: any): boolean => {
-    return Array.isArray(puzzleData) && puzzleData.length == 81;
+  const isValidPuzzleData = (puzzleData: number[]): boolean => {
+    return puzzleData.length == 81;
   };
 
-  const isValidProofData = (proofData: any): boolean => {
-    return (
-      'pi_a' in proofData &&
-      'pi_b' in proofData &&
-      'pi_c' in proofData &&
-      'protocol' in proofData &&
-      'curve' in proofData &&
-      proofData.protocol === 'groth16' &&
-      proofData.curve === 'bn128'
-    );
+  const isValidProofData = (proofData: {
+    pi_a: [];
+    pi_b: [];
+    pi_c: [];
+    protocol: string;
+    curve: string;
+  }): boolean => {
+    return proofData.protocol === 'groth16' && proofData.curve === 'bn128';
   };
 
   const onLoadPuzzle = () => {
